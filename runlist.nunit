@@ -1,0 +1,9 @@
+<NUnitProject>
+ <Settings activeconfig="Debug"/>
+ <Config name="Debug">
+   <assembly path="C:\Users\ASUS\source\repos\TP\API.Test\bin\Debug\API.Test.dll"/>
+ </Config>
+ <Config name="Release">
+   <assembly path="C:\Users\ASUS\source\repos\TP\API.Test\bin\Release\API.Test.dll"/>
+ </Config>
+</NUnitProject>
