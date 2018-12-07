@@ -41,7 +41,7 @@ namespace API.Test
             _mongo.GetAllBook();
 
             _collection.Received().Find(new BsonDocument());
-            Assert.IsInstanceOf<Task<List<Book>>>(_mongo.GetAllBook());
+            Assert.IsInstanceOf<Task<List<Book>>>(_mongo.GetAllBook())
         }
 
         [Test]
