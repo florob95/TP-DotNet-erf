@@ -14,11 +14,12 @@ namespace OwinSelfhostSample
     public class ValuesController : ApiController
     {
         // GET api/values 
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
             try
             {
-                return Ok(Singleton.Instance.Mongo.GetAllBook());
+                var dao = Factory.Create<Book>();
+                return Ok(await dao.GetAll());
             }
             catch (Exception e)
             {
@@ -27,11 +28,12 @@ namespace OwinSelfhostSample
         }
 
         // GET api/values/5 
-        public IHttpActionResult Get(string id)
+        public async Task<IHttpActionResult> Get(string id)
         {
             try
             {
-                return Ok(Singleton.Instance.Mongo.GetBook(id));
+                var dao = Factory.Create<Book>();
+                return Ok(await dao.Get(id));
             }
             catch (AggregateException)
             {
@@ -48,7 +50,8 @@ namespace OwinSelfhostSample
         {
             try
             {
-                Singleton.Instance.Mongo.AddBook(book);
+                var dao = Factory.Create<Book>();
+                dao.Add(book);
                 return Created("", book);
             }
             catch (Exception e)
@@ -62,7 +65,8 @@ namespace OwinSelfhostSample
         {
             try
             {
-                Singleton.Instance.Mongo.UpdateBook(id, book);
+                var dao = Factory.Create<Book>();
+                dao.Update(id, book);
                 return Ok();
             }
             catch (Exception e)
@@ -76,7 +80,8 @@ namespace OwinSelfhostSample
         {
             try
             {
-                Singleton.Instance.Mongo.DeleteBook(id);
+                var dao = Factory.Create<Book>();
+                dao.Delete(id);
                 return Ok();
             }
             catch (Exception e)

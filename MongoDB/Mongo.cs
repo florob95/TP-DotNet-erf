@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Model;
 using MongoDB.Bson;
@@ -10,7 +6,7 @@ using MongoDB.Driver;
 
 namespace MongoDB
 {
-    public class Mongo : IMongo
+    public class Mongo : IDao<Book>
     {
         private IMongoCollection<Book> _collection;
 
@@ -21,29 +17,34 @@ namespace MongoDB
             _collection = collection ?? database.GetCollection<Book>("books");
         }
 
-        public async Task<List<Book>> GetAllBook()
+        public void Dispose()
+        {
+            _collection = null;
+        }
+
+        public async Task<List<Book>> GetAll()
         {
             return await _collection.Find(new BsonDocument()).ToListAsync();
         }
 
-        public async Task<Book> GetBook(string id)
+        public async Task<Book> Get(string id)
         {
             var objectId = ObjectId.Parse(id);
             return await _collection.Find(book => book._id == objectId).SingleAsync();
         }
 
-        public async void AddBook(Book book)
+        public async void Add(Book book)
         {
             await _collection.InsertOneAsync(book);
         }
 
-        public async void DeleteBook(string id)
+        public async void Delete(string id)
         {
             var objectId = ObjectId.Parse(id);
             await _collection.DeleteOneAsync(book => book._id == objectId);
         }
 
-        public void UpdateBook(string id, Book bookParam)
+        public void Update(string id, Book bookParam)
         {
             var objectId = ObjectId.Parse(id);
             _collection.UpdateOneAsync(
